@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+  <data>
+    <!-- Add instructor field to existing view -->
+    <record model="ir.ui.view" id="course_weekday_sessions_form_view">
+      <field name="name">openacademy.weekday</field>
+      <field name="model">openacademy.course</field>
+      <field name="inherit_id" ref="openacademy.course_form_view"/>
+      <field name="arch" type="xml">
+        <notebook position="before">
+          <group string="Configure weekly Sessions">
+            <field name="start_date"/>
+            <field name="number_sessions"/>
+            <button string="Generate sessions" name="generate_sessions" type="object" class="oe_highlight" groups="openacademy.academy_manager"/>
+          </group>
+          <field name="session_ids" string="Course sessions">
+            <tree editable="top/bottom">
+              <field name="name"/>
+              <field name="start_date"/>
+              <field name="end_date"></field>
+              <field name="taken_seats" widget="progressbar"></field>
+            </tree>
+          </field>
+
+        </notebook>
+
+        <sheet position="before">
+          <header>
+            <button name="created" type="workflow" string="Reset course" states="subscribing"/>
+            <button name="subscribing" type="workflow" string="Open subscription" states="created" class="oe_highlight"/>
+            <button name="closed" type="workflow" string="Close Subscription" states="subscribing" class="oe_highlight"/>
+            <!-- <button name="started" type="workflow" string="" states="" class="oe_highlight"/>
+            <button name="finish" type="workflow" string="Mark as done" states="" class="oe_highlight"/> -->
+            <field name="state" widget="statusbar"/>
+          </header>
+        </sheet>
+
+      </field>
+    </record>
+
+  </data>
+</openerp>
