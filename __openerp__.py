@@ -31,7 +31,7 @@
         # 'templates.xml',
         'views/courses.xml',
         # 'views/partner.xml',
-        # 'views/session_workflow.xml',
+        'views/course_workflow.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
