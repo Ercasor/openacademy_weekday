@@ -1,0 +1,78 @@
+<openerp>
+  <data>
+    <record model="workflow" id="wkf_course">
+      <field name="name">OpenAcademy course workflow</field>
+      <field name="osv">openacademy.course</field>
+      <field name="on_create">True</field>
+    </record>
+
+    <record model="workflow.activity" id="created">
+      <field name="name">Created</field>
+      <field name="wkf_id" ref="wkf_course"/>
+      <field name="flow_start" eval="True"/>
+      <field name="kind">function</field>
+      <field name="action">action_created()</field>
+    </record>
+    <record model="workflow.activity" id="subscribing">
+      <field name="name">Subscribing</field>
+      <field name="wkf_id" ref="wkf_course"/>
+      <field name="kind">function</field>
+      <field name="action">action_subscribing()</field>
+    </record>
+    <record model="workflow.activity" id="closed">
+      <field name="name">Closed</field>
+      <field name="wkf_id" ref="wkf_course"/>
+      <field name="kind">function</field>
+      <field name="action">action_closed()</field>
+    </record>
+    <record model="workflow.activity" id="started">
+      <field name="name">Started</field>
+      <field name="wkf_id" ref="wkf_course"/>
+      <field name="kind">function</field>
+      <field name="action">action_started()</field>
+    </record>
+    <record model="workflow.activity" id="finished">
+      <field name="name">Finished</field>
+      <field name="wkf_id" ref="wkf_course"/>
+      <field name="kind">function</field>
+      <field name="action">action_finished()</field>
+    </record>
+
+    <record model="workflow.transition" id="course_created_to_subscribing">
+      <field name="act_from" ref="created"/>
+      <field name="act_to" ref="subscribing"/>
+      <field name="signal">subscribing</field>
+    </record>
+    <record model="workflow.transition" id="course_subscribing_to_closed">
+      <field name="act_from" ref="subscribing"/>
+      <field name="act_to" ref="closed"/>
+      <field name="signal">closed</field>
+    </record>
+    <record model="workflow.transition" id="course_subscribing_to_created">
+      <field name="act_from" ref="subscribing"/>
+      <field name="act_to" ref="created"/>
+      <field name="signal">created</field>
+    </record>
+    <record model="workflow.transition" id="course_closed_to_started">
+      <field name="act_from" ref="closed"/>
+      <field name="act_to" ref="started"/>
+      <field name="signal">started</field>
+    </record>
+    <record model="workflow.transition" id="course_started_to_finished">
+      <field name="act_from" ref="started"/>
+      <field name="act_to" ref="finished"/>
+      <field name="signal">finished</field>
+    </record>
+
+    <record model="workflow.transition" id="course_auto_start_by_date">
+      <field name="act_from" ref="closed"/>
+      <field name="act_to" ref="started"/>
+      <field name="condition">(today == start_date) or (today == end_date) or ((today &gt; start_date) and (today &lt; end_date))</field>
+    </record>
+    <record model="workflow.transition" id="course_auto_finish_by_date">
+      <field name="act_from" ref="started"/>
+      <field name="act_to" ref="finished"/>
+      <field name="condition">today &gt; end_date</field>
+    </record>
+  </data>
+</openerp>
